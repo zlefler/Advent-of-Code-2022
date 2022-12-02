@@ -11,12 +11,21 @@ throw_scores = {'X': 1, 'Y': 2, 'Z': 3}
 matchup_scores = {'A X': 3, 'A Y': 6, 'A Z': 0, 'B X': 0, 'B Y': 3, 'B Z': 6, 'C X': 6,
                   'C Y': 0, 'C Z': 3}
 
-total_score = 0
+total_score_1 = 0
 with open('day_2_input.txt') as f:
     for line in f.read().splitlines():
-        total_score += matchup_scores[line]
-        total_score += throw_scores[line[-1]]
+        total_score_1 += matchup_scores[line]
+        total_score_1 += throw_scores[line[-1]]
 
-print(f'Answer to Part One: {total_score}')
+print(f'Answer to Part One: {total_score_1}')
 
 # Part Two
+
+updated_scores = {'A X': 3, 'A Y': 4, 'A Z': 8, 'B X': 1, 'B Y': 5, 'B Z': 9, 'C X': 2,
+                  'C Y': 6, 'C Z': 7}
+
+total_score_2 = 0
+with open('day_2_input.txt') as f:
+    for line in f.read().splitlines():
+        total_score_2 += updated_scores[line]
+print(f'Answer to Part Two: {total_score_2}')

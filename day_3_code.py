@@ -35,3 +35,35 @@ with open('day_3_input.txt') as f:
                 break
 
 print(f'Solution to Part One: {priority_sum}')
+
+# Part Two
+
+with open('day_3_input.txt') as f:
+    groups = []
+    group = []
+    i = 0
+    sum = 0
+    for line in f.read().splitlines():
+        if i <= 2:
+            group.append(line)
+            i += 1
+        else:
+            groups.append(group)
+            i = 0
+            group = []
+
+    for group in groups:
+        frequency_map = {}
+        for i in range(len(group)):
+            for char in group[i]:
+                if i == 0:
+                    frequency_map[char] = i
+                else:
+                    if char in frequency_map and frequency_map[char] == i-1:
+                        frequency_map[char] = i
+        for key, val in frequency_map.items():
+            if val == 2:
+                sum += priority_map[key]
+
+
+print(sum)

@@ -61,5 +61,4 @@ with open('day_3_input.txt') as f:
         for key, val in frequency_map.items():
             if val == 2:
                 sum += priority_map[key]
-
 print(sum)

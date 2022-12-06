@@ -1,4 +1,4 @@
-def marker_start() -> int:
+def marker_start() -> int:  # Function for Part One
     '''...It needs to report the number of characters from the beginning of the buffer to the end of the first such four-character marker.'''
     frequency_map = {}
     left = 0
@@ -14,12 +14,13 @@ def marker_start() -> int:
                     del frequency_map[text[left]]
                 left += 1
                 if len(frequency_map) == 4:
-                    return left
-
+                    return left + 4
 
     # set left and right sides of window
     # move right side k times, add letters to map
     # check if all discrete
     # if not, move right and add, move left and subtract
     # check again, when all discrete, return left
-print(marker_start())
+
+
+print(f'answer to Part One: {marker_start()}')

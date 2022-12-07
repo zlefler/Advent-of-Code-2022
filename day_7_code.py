@@ -1,3 +1,5 @@
+from collections import deque
+
 '''cd means change directory. This changes which directory is the current directory, but the specific result depends on the argument:
 cd x moves in one level: it looks in the current directory for the directory named x and makes it the current directory.
 cd .. moves out one level: it finds the directory that contains the current directory, then makes that directory the current directory.
@@ -11,14 +13,14 @@ To begin, find all of the directories with a total size of at most 100000, then 
 
 
 class Directory():
-    def __init__(self, name, parent=None, size=None) -> None:
+    def __init__(self, name, parent=None, size=0) -> None:
         self.name = name
         self.children = []
         self.parent = parent
         self.size = size
 
     def add_to_size(self, size):
-        self.size += size
+        self.size += int(size)
         if self.parent:
             self.parent.add_to_size(size)
 
@@ -29,32 +31,57 @@ class File():
         self.name = name
 
 
-def large_file_sum(max_size, sample=None):
+def build_directory(sample=None):
     home = Directory('/')
     current = home
     listing = False
     with open('day_7_input.txt') as f:
         if sample is None:
             text = f.read().splitlines()
-        else:
-            text = sample
         for unsplit_line in text:
             line = unsplit_line.split()
             if listing:
                 if line[0] == 'dir':
-                    line[1] = new_dir = Directory(line[1])
+                    line[1] = new_dir = Directory(line[1], current)
                     current.children.append(new_dir)
-                else:
+                elif line[0].isnumeric():
                     line[1] = new_file = File(line[1], line[0])
-                    new_file.add_to_size(line[0])
+                    current.add_to_size(int(line[0]))
                     current.children.append(new_file)
+                else:
+                    listing = False
             if line[1] == 'cd':
                 if line[2] == '/':
                     current = home
                 elif line[2] == '..':
                     current = current.parent
+                else:
+                    for child in current.children:
+                        if child.name == line[2]:
+                            current = child
             elif line[1] == 'ls':
                 listing = True
+    return home
 
 
-print(large_file_sum(100000))
+def sum_of_small_dirs(directory, max_size):
+    sum = 0
+    directory
+    dirs = deque()
+    dirs.append(directory)
+    while dirs:
+        dir = dirs.popleft()
+        if isinstance(dir, File):
+            sum += int(dir.size)
+        else:
+            for child in dir.children:
+                if child == File:
+                    sum += child.size
+                else:
+                    dirs.append(child)
+    return sum
+
+
+home = build_directory()
+
+print(sum_of_small_dirs(home, 100000))

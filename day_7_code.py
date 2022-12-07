@@ -20,7 +20,7 @@ class Directory():
         self.size = size
 
     def add_to_size(self, size):
-        self.size += int(size)
+        self.size += size
         if self.parent:
             self.parent.add_to_size(size)
 
@@ -42,10 +42,10 @@ def build_directory(sample=None):
             line = unsplit_line.split()
             if listing:
                 if line[0] == 'dir':
-                    line[1] = new_dir = Directory(line[1], current)
+                    new_dir = Directory(line[1], current)
                     current.children.append(new_dir)
                 elif line[0].isnumeric():
-                    line[1] = new_file = File(line[1], line[0])
+                    new_file = File(line[1], int(line[0]))
                     current.add_to_size(int(line[0]))
                     current.children.append(new_file)
                 else:
@@ -65,21 +65,20 @@ def build_directory(sample=None):
 
 
 def sum_of_small_dirs(directory, max_size):
-    sum = 0
+    total = 0
+    dir = None
     directory
     dirs = deque()
     dirs.append(directory)
     while dirs:
-        dir = dirs.popleft()
-        if isinstance(dir, File):
-            sum += int(dir.size)
-        else:
-            for child in dir.children:
-                if child == File:
-                    sum += child.size
-                else:
+        for _ in range(len(dirs)):
+            dir = dirs.popleft()
+            if isinstance(dir, Directory):
+                for child in dir.children:
                     dirs.append(child)
-    return sum
+            if dir.size <= max_size:
+                total += dir.size
+    return total
 
 
 home = build_directory()

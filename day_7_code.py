@@ -31,6 +31,13 @@ class File():
         self.name = name
 
 
+class Shell():
+    def __init__(self) -> None:
+        self._cwd = ''
+        self._current_command = None
+        self._cursor = None
+
+
 def build_directory(sample=None):
     home = Directory('/')
     current = home
